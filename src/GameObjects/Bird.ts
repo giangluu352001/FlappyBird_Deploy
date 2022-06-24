@@ -1,11 +1,15 @@
 export class Bird extends Phaser.GameObjects.Sprite {
-    private tween: Phaser.Tweens.Tween;
+    body: Phaser.Physics.Arcade.Body;
+    private idle: Phaser.Tweens.Tween;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
         super(scene, x, y, 'bird2');
         this.setScale(scale).setOrigin(0.5, 0.5).setDepth(4);
+        this.scene.physics.world.enable(this);
+        this.body.setSize(this.width, this.height * 0.9);
         scene.add.existing(this);
         this.flyAnimation();
         this.play('fly', true);
+        this.setIdle();
     }
     private flyAnimation(): void {
         let config: Phaser.Types.Animations.Animation = {
@@ -20,20 +24,32 @@ export class Bird extends Phaser.GameObjects.Sprite {
         this.scene.anims.create(config);
     }
     public jump(): void {
-        this.scene.physics.world.enable(this);
-        let body = this.body as Phaser.Physics.Arcade.Body;
-        body.setVelocityY(-350);
-        body.setGravityY(1000);
-        this.tween = this.scene.tweens.add({
+        this.idle.stop();
+        this.body.setVelocityY(-400);
+        this.body.setGravityY(1200);
+        this.scene.tweens.add({
                 targets: this,
                 angle: -25,
                 duration: 100
-            });
+        });
+    }
+    public setIdle(): void {
+        this.idle?.stop();
+        this.idle = this.scene.tweens.add({
+          targets: this,
+          y: {from: this.y + 3, to: this.y - 3 },
+          duration: 360,
+          yoyo: -1,
+          repeat: -1
+        });
+      }
+    public die(): void {
+        this.body.setVelocityY(400);
+        this.body.setCollideWorldBounds(true);
     }
     public update(time: number, delta: number): void {
-        if (this.scene.physics.world.isPaused)
-            this.anims.stop();
-        else if (this.angle >= -25 && this.angle <= 90 && this.body
-        && this.body.velocity.y >= 300) this.angle += 3;
+        if (!this.active) this.anims.stop();
+        if (this.angle >= -25 && this.angle <= 90 
+        && this.body.velocity.y >= 400) this.angle += 5;
     }
 }
