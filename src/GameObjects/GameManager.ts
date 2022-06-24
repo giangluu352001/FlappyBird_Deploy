@@ -26,11 +26,18 @@ export class GameManager {
         this.obj = obj;
         this.isEnded = false;
         this.pipeObstacle = scene.add.group();
-        this.scene.physics.world.bounds.setTo(0, 0, 900, 500);
+        this.scene.physics.world.bounds.setTo(0, 0, 900, 553);
         this.groundCollision = scene.physics.add.overlap(this.obj.bird, this.obj.ground, this.end);
         this.pipeCollision = scene.physics.add.overlap(this.obj.bird, this.pipeObstacle, this.end);
     }
     private end = (): void => {
+        this.scene.sound.play('hit');
+        this.scene.time.addEvent({
+            delay: 150,
+            loop: false,
+            callbackScope: this,
+            callback: () => this.scene.sound.play('die'),
+           });
         this.obj.bird.die();
         this.obj.score.setVisible(false);
         this.obj.pauseButton.setVisible(false);
@@ -63,8 +70,8 @@ export class GameManager {
         else this.obj.bird.jump();
     }
     private disable(): void {
-        Object.values(this.obj).map(val => val.setActive(false));
-        this.pipeObstacle.getChildren().forEach((child) => child.setActive(false));
+        this.scene.tweens.getAllTweens().forEach((tween) => tween.stop());
+        this.pipeObstacle.getChildren().forEach((child: Pipe) => child.body.setVelocityX(0));
     }
     public update(time: number, delta: number) {
         Object.values(this.obj).map(val => val.update(time, delta));
@@ -74,7 +81,7 @@ export class GameManager {
         const random: number = Phaser.Math.Between(120, 220)
         let pipeUp: PipeUp = new PipeUp(this.scene, random);
         let pipeDown: PipeDown = new PipeDown(this.scene, random);
-        this.upScore(5800, false, true);
+        this.upScore(3800, false, true);
         this.pipeObstacle.addMultiple([pipeUp, pipeDown]);
     }
     private upScore(delay: number, isLoop: boolean, isCallback: boolean): void {
@@ -87,6 +94,6 @@ export class GameManager {
     }
     private inscrease = (isCallback: boolean): void => {
         this.obj.score.increaseScore();
-        this.upScore(4100, true, false);
+        this.upScore(4150, true, false);
     }
 }

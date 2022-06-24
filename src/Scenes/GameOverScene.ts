@@ -8,13 +8,12 @@ export class GameOverScene extends Phaser.Scene {
         super('gameOver-scene');  
     }
     public create(): void {
-        let container: Phaser.GameObjects.Container = this.add.container(450, 300);
-        let message: Phaser.GameObjects.Image = this.add.image(450, 100, 'sprite', 'message/message-game-over')
-        message.setDepth(6).setScale(1.4);
+        let container: Phaser.GameObjects.Container = this.add.container(300, 300);
+        let message: Phaser.GameObjects.Image = this.add.image(300, 100, 'sprite', 'message/message-game-over')
+        message.setDepth(6);
         let board: Phaser.GameObjects.Image = this.add.image(0, -20, 'sprite', 'message/board');
         let ok: Phaser.GameObjects.Image = this.add.image(0, 100, 'sprite', 'button/button-ok');
-        this.messnew = this.add.image(35, -10, 'sprite', 'message/message-new').setVisible(true);
-        ok.setScale(1.3);
+        this.messnew = this.add.image(35, -10, 'sprite', 'message/message-new').setVisible(false);
         ok.setInteractive().on('pointerdown', () => {
             ok.disableInteractive();
             this.scene.start('initial-scene');
@@ -22,7 +21,7 @@ export class GameOverScene extends Phaser.Scene {
         this.score = new Score(this, 'digit-20', 60, -32);
         this.highScore = new Score(this, 'digit-20', 60, 12);
         container.add(board).add(ok).add(this.score).
-        add(this.messnew).add(this.highScore).setDepth(6).setScale(1.5);
+        add(this.messnew).add(this.highScore).setDepth(6).setScale(1.3);
     }
     public show(score: number): void {
         let highScore: number = Number(localStorage.getItem('score'));

@@ -25,6 +25,7 @@ export class Bird extends Phaser.GameObjects.Sprite {
     }
     public jump(): void {
         this.idle.stop();
+        this.scene.sound.play('wing');
         this.body.setVelocityY(-400);
         this.body.setGravityY(1200);
         this.scene.tweens.add({
@@ -46,9 +47,9 @@ export class Bird extends Phaser.GameObjects.Sprite {
     public die(): void {
         this.body.setVelocityY(400);
         this.body.setCollideWorldBounds(true);
+        this.anims.stop();
     }
     public update(time: number, delta: number): void {
-        if (!this.active) this.anims.stop();
         if (this.angle >= -25 && this.angle <= 90 
         && this.body.velocity.y >= 400) this.angle += 5;
     }

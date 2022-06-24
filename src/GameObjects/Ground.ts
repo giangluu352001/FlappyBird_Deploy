@@ -1,15 +1,21 @@
 import Phaser = require("phaser");
-
-export class Ground extends Phaser.GameObjects.TileSprite {
+export class Ground extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
-        super(scene, x, y, 910, 150, 'ground');
+        super(scene, x, y, 'ground');
         scene.add.existing(this);
         scene.physics.world.enable(this);
-        this.setScale(scale).setOrigin(0, 0).setDepth(3);
+        this.setOrigin(0, 0.5);
+        this.setScale(scale).setDepth(3);
+        this.move();
     }
-    public update(time: number, delta: number) {
-        if (this.active) this.tilePositionX += 80 * delta / 1000;
-    }
+    public move() {
+        this.scene.tweens.add({
+          targets: this,
+          x: -1050,
+          duration: (this.x + 1050) / 100 * 1000,
+          loop: -1
+        });
+      }
    
 }

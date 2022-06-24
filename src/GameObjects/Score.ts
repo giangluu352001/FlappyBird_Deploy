@@ -26,6 +26,7 @@ export class Score extends Phaser.GameObjects.Container {
         });
     }
     public increaseScore = (): void => {
+        this.scene.sound.play('point');
         this.value += 1;
         this.showScore();
     }

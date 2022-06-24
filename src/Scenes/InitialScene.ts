@@ -18,11 +18,11 @@ export class InitialScene extends Phaser.Scene {
     }
     public create(): void {
         this.background = new Background(this, 450, 324, 0.6);
-        this.ground = new Ground(this, 0, 500, 1.3);
-        this.bird = new Bird(this, 300, 300, 0.09);
-        this.score = new Score(this, 'digit-36', 450, 80);
+        this.ground = new Ground(this, 0, 640, 1.5);
+        this.bird = new Bird(this, 180, 300, 0.09);
+        this.score = new Score(this, 'digit-36', 300, 80);
         this.messButton = new ButtonTitle(this);
-        this.pauseButton = this.add.image(150, 80, 'sprite', 'button/button-pause')
+        this.pauseButton = this.add.image(120, 80, 'sprite', 'button/button-pause')
         .setVisible(false).setDepth(7).setScale(1.3).setInteractive().on('pointerdown', () => {
             this.scene.launch('resume-scene');
             this.scene.pause();

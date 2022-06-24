@@ -6,14 +6,14 @@ import { ResumeScene } from "./Scenes/ResumeScene";
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   scale: {
-    width: 900,
-    height: 648,
+    width: 600,
+    height: 700,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true
+      debug: false
     }
   },
   scene: [LoadingScene, InitialScene, ResumeScene, GameOverScene] 
