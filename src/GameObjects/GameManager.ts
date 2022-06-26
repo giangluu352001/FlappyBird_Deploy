@@ -1,4 +1,5 @@
 import Phaser = require("phaser");
+import { DELAYADD, FIRSTDELAY } from "../constant";
 import { GameOverScene } from "../Scenes/GameOverScene";
 import { Background } from "./Background";
 import { Bird } from "./Bird";
@@ -57,7 +58,7 @@ export class GameManager {
         this.obj.pauseButton.setVisible(true);
         this.obj.score.setVisible(true).showScore();
         this.scene.time.addEvent({
-            delay: 2000,
+            delay: DELAYADD,
             loop: true,
             callbackScope: this,
             callback: this.addObstacle
@@ -78,10 +79,10 @@ export class GameManager {
         this.pipeObstacle.getChildren().forEach((child) => { child.update(time, delta) });
     }
     private addObstacle = (): void => {
-        const random: number = Phaser.Math.Between(120, 220)
+        const random: number = Phaser.Math.Between(120, 220);
         let pipeUp: PipeUp = new PipeUp(this.scene, random);
         let pipeDown: PipeDown = new PipeDown(this.scene, random);
-        this.upScore(3800, false, true);
+        this.upScore(FIRSTDELAY, false, true);
         this.pipeObstacle.addMultiple([pipeUp, pipeDown]);
     }
     private upScore(delay: number, isLoop: boolean, isCallback: boolean): void {
@@ -94,6 +95,6 @@ export class GameManager {
     }
     private inscrease = (isCallback: boolean): void => {
         this.obj.score.increaseScore();
-        this.upScore(4150, true, false);
+        this.upScore(FIRSTDELAY + DELAYADD, true, false);
     }
 }

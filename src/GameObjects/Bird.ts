@@ -3,7 +3,7 @@ export class Bird extends Phaser.GameObjects.Sprite {
     private idle: Phaser.Tweens.Tween;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
         super(scene, x, y, 'bird2');
-        this.setScale(scale).setOrigin(0.5, 0.5).setDepth(4);
+        this.setScale(scale).setDepth(4);
         this.scene.physics.world.enable(this);
         this.body.setSize(this.width, this.height * 0.9);
         scene.add.existing(this);

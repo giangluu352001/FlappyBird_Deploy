@@ -1,4 +1,5 @@
 import Phaser = require("phaser");
+import { SPEED } from "../constant";
 export class Ground extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
@@ -9,11 +10,11 @@ export class Ground extends Phaser.GameObjects.Sprite {
         this.setScale(scale).setDepth(3);
         this.move();
     }
-    public move() {
+    public move(): void {
         this.scene.tweens.add({
           targets: this,
-          x: -1050,
-          duration: (this.x + 1050) / 100 * 1000,
+          x: - this.displayWidth / 2,
+          duration: (this.x + this.displayWidth / 2) / SPEED * 1000,
           loop: -1
         });
       }
