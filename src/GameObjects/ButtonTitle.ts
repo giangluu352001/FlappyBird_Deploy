@@ -16,7 +16,7 @@ export class ButtonTitle extends Phaser.GameObjects.Container {
         });
         button.setInteractive().on('pointerdown', () => {
             button.disableInteractive();
-            (scene as InitialScene).getMain().play();
+            (scene as InitialScene).playGame();
         });
     }
 }

@@ -10,7 +10,7 @@ export class Pipe extends Phaser.GameObjects.Image {
         this.setOrigin(0.5, 0).setDepth(2).setScale(1.3);
     }
     public update(time: number, delta: number): void {
-        if (this.active && this.x <= - WIDTHSCENE / 2)
+        if (this.active && this.x <= - WIDTHSCENE / 4)
             this.destroy();
     }
 }

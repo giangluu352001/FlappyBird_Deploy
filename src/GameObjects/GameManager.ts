@@ -38,7 +38,7 @@ export class GameManager {
             delay: 150,
             loop: false,
             callbackScope: this,
-            callback: () => this.scene.sound.play('die'),
+            callback: () => this.scene.sound.play('die')
         });
         this.obj.bird.die();
         this.obj.score.setVisible(false);

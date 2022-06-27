@@ -34,10 +34,10 @@ export class InitialScene extends Phaser.Scene {
         });
         this.scene.launch('gameOver-scene');
         this.scene.sleep('gameOver-scene');
-        this.input.keyboard.once('keydown-SPACE', this.gameManager.play, this);
+        this.input.keyboard.once('keydown-SPACE', this.playGame, this);
     }
-    public getMain(): GameManager{
-        return this.gameManager;
+    public playGame = (): void => {
+        this.gameManager.play();
     }
     public update(time: number, delta: number): void {
         this.gameManager.update(time, delta);
