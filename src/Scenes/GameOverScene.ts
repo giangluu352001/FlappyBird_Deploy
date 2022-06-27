@@ -15,10 +15,8 @@ export class GameOverScene extends Phaser.Scene {
         let ok: Phaser.GameObjects.Image = this.add.image(0, 100, 'sprite', 'button/button-ok');
         let medal: Phaser.GameObjects.Image = this.add.image(-65, -13, 'sprite', 'medal/silver-medal');
         this.messnew = this.add.image(35, -10, 'sprite', 'message/message-new').setVisible(false);
-        ok.setInteractive().on('pointerdown', () => {
-            ok.disableInteractive();
-            this.scene.start('initial-scene');
-        });
+        ok.setInteractive().once('pointerdown', this.reset, this);
+        this.input.keyboard.once('keydown-SPACE', this.reset, this);
         this.score = new Score(this, 'digit-20', 60, -32);
         this.highScore = new Score(this, 'digit-20', 60, 12);
         container.add(board).add(ok).add(this.score).add(this.messnew)
@@ -29,6 +27,13 @@ export class GameOverScene extends Phaser.Scene {
             duration: 300,
             y: {from: container.y - 30, to: container.y },
             repeat: 0
+        });
+    }
+    private reset = (): void => {
+        this.cameras.main.fadeOut(600, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, 
+        (cam: Phaser.Cameras.Scene2D.Camera, effect: Phaser.Cameras.Scene2D.Effects.Fade) => {
+            this.scene.start('initial-scene');
         });
     }
     public show(score: number): void {

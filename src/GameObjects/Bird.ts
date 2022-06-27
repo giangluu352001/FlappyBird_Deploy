@@ -7,6 +7,8 @@ export class Bird extends Phaser.GameObjects.Sprite {
         this.scene.physics.world.enable(this);
         this.body.setSize(this.width, this.height * 0.9);
         scene.add.existing(this);
+        this.body.setCollideWorldBounds(true);
+        this.body.onWorldBounds = true;
         this.flyAnimation();
         this.play('fly', true);
         this.setIdle();
@@ -23,8 +25,8 @@ export class Bird extends Phaser.GameObjects.Sprite {
         }
         this.scene.anims.create(config);
     }
-    public jump(): void {
-        this.idle.stop();
+    public jump = (): void => {
+        this.idle?.stop();
         this.scene.sound.play('wing');
         this.body.setVelocityY(-400);
         this.body.setGravityY(1200);
@@ -38,15 +40,14 @@ export class Bird extends Phaser.GameObjects.Sprite {
         this.idle?.stop();
         this.idle = this.scene.tweens.add({
           targets: this,
-          y: {from: this.y + 3, to: this.y - 3 },
-          duration: 360,
+          y: {from: this.y + 6, to: this.y - 6 },
+          duration: 600,
           yoyo: -1,
           repeat: -1
         });
-      }
+    }
     public die(): void {
         this.body.setVelocityY(400);
-        this.body.setCollideWorldBounds(true);
         this.anims.stop();
     }
     public update(time: number, delta: number): void {

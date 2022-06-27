@@ -21,15 +21,16 @@ export class GameManager {
     private obj: objectGame;
     private pipeCollision: Phaser.Physics.Arcade.Collider;
     private groundCollision: Phaser.Physics.Arcade.Collider;
-    private isEnded: boolean;
+    private input: Phaser.Input.Keyboard.Key;
     constructor(scene: Phaser.Scene, obj: objectGame) {
         this.scene = scene;
         this.obj = obj;
-        this.isEnded = false;
         this.pipeObstacle = scene.add.group();
-        this.scene.physics.world.bounds.setTo(0, 0, 900, 553);
+        this.scene.physics.world.bounds.setTo(0, -20, 900, 573);
         this.groundCollision = scene.physics.add.overlap(this.obj.bird, this.obj.ground, this.end);
         this.pipeCollision = scene.physics.add.overlap(this.obj.bird, this.pipeObstacle, this.end);
+        scene.physics.world.on('worldbounds', (body: Phaser.Physics.Arcade.Body, 
+        up: boolean, down: boolean, left: boolean, right: boolean) => { if (down) this.end() });
     }
     private end = (): void => {
         this.scene.sound.play('hit');
@@ -38,16 +39,17 @@ export class GameManager {
             loop: false,
             callbackScope: this,
             callback: () => this.scene.sound.play('die'),
-           });
+        });
         this.obj.bird.die();
         this.obj.score.setVisible(false);
         this.obj.pauseButton.setVisible(false);
         this.scene.physics.world.removeCollider(this.groundCollision);
         this.scene.physics.world.removeCollider(this.pipeCollision);
+        this.scene.physics.world.removeAllListeners();
         this.disable();
         this.scene.time.removeAllEvents();
         this.scene.input.removeAllListeners();
-        this.isEnded = true;
+        this.input.removeAllListeners();
         this.scene.scene.wake('gameOver-scene');
         let gameOverScene = this.scene.scene.get('gameOver-scene') as GameOverScene;
         gameOverScene.show(this.obj.score.getScore());
@@ -63,12 +65,9 @@ export class GameManager {
             callbackScope: this,
             callback: this.addObstacle
         });
-        this.scene.input.keyboard.on('keydown-SPACE', this.resetOrJump, this.obj.bird);
-        this.scene.input.on('pointerdown', this.obj.bird.jump, this.obj.bird);
-    }
-    private resetOrJump = (): void => {
-        if (this.isEnded) this.scene.scene.start('initial-scene');
-        else this.obj.bird.jump();
+        this.input = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.input.on('down', this.obj.bird.jump, this.scene);
+        this.scene.input.on('pointerdown', this.obj.bird.jump, this.scene);
     }
     private disable(): void {
         this.scene.tweens.getAllTweens().forEach((tween) => tween.stop());
