@@ -82,7 +82,7 @@ export class GameManager {
             delay: FIRSTDELAY,
             loop: false,
             callbackScope: this,
-            callback: () => { this.obj.score.increaseScore(); }
+            callback: this.obj.score.increaseScore
         });
     }
 }
