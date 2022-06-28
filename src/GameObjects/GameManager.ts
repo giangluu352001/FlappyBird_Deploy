@@ -70,7 +70,6 @@ export class GameManager {
         this.scene.time.removeAllEvents();
         this.scene.input.shutdown();
         this.scene.tweens.getAllTweens().forEach((tween) => tween.stop());
-        this.pipeObstacle.getChildren().forEach((child: Pipe) => child.body.setVelocityX(0));
     }
     public update(time: number, delta: number) {
        this.obj.bird.update(time, delta);
