@@ -5,7 +5,7 @@ import { Background } from "./Background";
 import { Bird } from "./Bird";
 import { ButtonTitle } from "./ButtonTitle";
 import { Ground } from "./Ground";
-import { PipeUp, PipeDown, Pipe } from "./Pipe";
+import { PipeUp, PipeDown } from "./Pipe";
 import { Score } from "./Score";
 interface objectGame {
     bird: Bird;
@@ -25,8 +25,7 @@ export class GameManager {
         this.obj = obj;
         this.pipeObstacle = scene.add.group();
         this.scene.physics.world.bounds.setTo(0, -20, 900, 573);
-        scene.physics.add.overlap(this.obj.bird, this.obj.ground, this.end);
-        scene.physics.add.overlap(this.obj.bird, this.pipeObstacle, () => {
+        scene.physics.add.collider(this.obj.bird, this.pipeObstacle, () => {
             this.end();
             this.scene.time.addEvent({
                 delay: 150,

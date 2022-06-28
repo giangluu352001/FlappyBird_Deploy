@@ -1,5 +1,5 @@
 import Phaser = require("phaser");
-import { FIRSTDELAY, PIPEFIRSTX, SPEED, WIDTHSCENE } from "../constant";
+import { PIPEFIRSTX, SPEED } from "../constant";
 export class Pipe extends Phaser.GameObjects.Image {
     body: Phaser.Physics.Arcade.Body
     constructor(scene: Phaser.Scene, text: string) {
@@ -7,6 +7,7 @@ export class Pipe extends Phaser.GameObjects.Image {
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.setOrigin(0.5, 0).setDepth(2).setScale(1.3);
+        this.body.immovable = true;
         this.move();
     }
     private move(): void {
