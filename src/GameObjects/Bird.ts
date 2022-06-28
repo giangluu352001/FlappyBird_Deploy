@@ -1,6 +1,7 @@
 export class Bird extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
     private idle: Phaser.Tweens.Tween;
+    private isFly: boolean = false;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
         super(scene, x, y, 'bird2');
         this.setScale(scale).setDepth(4);
@@ -12,6 +13,12 @@ export class Bird extends Phaser.GameObjects.Sprite {
         this.flyAnimation();
         this.play('fly', true);
         this.setIdle();
+    }
+    public checkisFly(): boolean {
+        return this.isFly;
+    }
+    public setisFly(val: boolean): void {
+        this.isFly = val;
     }
     private flyAnimation(): void {
         let config: Phaser.Types.Animations.Animation = {

@@ -37,7 +37,7 @@ export class InitialScene extends Phaser.Scene {
         this.input.keyboard.once('keydown-SPACE', this.playGame, this);
     }
     public playGame = (): void => {
-        this.gameManager.play();
+        if (!this.bird.checkisFly()) this.gameManager.play();
     }
     public update(time: number, delta: number): void {
         this.gameManager.update(time, delta);

@@ -7,6 +7,7 @@ export class LoadingScene extends Phaser.Scene {
         this.load.audio('die', './assets/audio/die.wav');
         this.load.audio('hit', './assets/audio/hit.wav'  );
         this.load.audio('point', './assets/audio/point.wav');
+        this.load.audio('swoosh', './assets/audio/swoosh.wav');
         this.load.image('background', './assets/background.png');
         this.load.image('ground', './assets/ground.png');
         this.load.image('bird1', './assets/bird/frame-1.png');

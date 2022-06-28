@@ -4,6 +4,7 @@ export class GameOverScene extends Phaser.Scene {
     private score: Score;
     private highScore: Score;
     private messnew: Phaser.GameObjects.Image;
+    private medal: Phaser.GameObjects.Image;
     constructor() {
         super('gameOver-scene');  
     }
@@ -13,14 +14,14 @@ export class GameOverScene extends Phaser.Scene {
         message.setDepth(6);
         let board: Phaser.GameObjects.Image = this.add.image(0, -20, 'sprite', 'message/board');
         let ok: Phaser.GameObjects.Image = this.add.image(0, 100, 'sprite', 'button/button-ok');
-        let medal: Phaser.GameObjects.Image = this.add.image(-65, -13, 'sprite', 'medal/silver-medal');
+        this.medal = this.add.image(-65, -13, 'sprite', 'medal/silver-medal');
         this.messnew = this.add.image(35, -10, 'sprite', 'message/message-new').setVisible(false);
         ok.setInteractive().once('pointerdown', this.reset, this);
         this.input.keyboard.once('keydown-SPACE', this.reset, this);
         this.score = new Score(this, 'digit-20', 60, -32);
         this.highScore = new Score(this, 'digit-20', 60, 12);
         container.add(board).add(ok).add(this.score).add(this.messnew)
-        .add(this.highScore).add(medal).add(message).setDepth(6).setScale(1.3);
+        .add(this.highScore).add(this.medal).add(message).setDepth(6).setScale(1.3);
         this.cameras.main.flash();
         this.tweens.add({
             targets: container,
@@ -30,6 +31,7 @@ export class GameOverScene extends Phaser.Scene {
         });
     }
     private reset = (): void => {
+        this.sound.play('swoosh');
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, 
         (cam: Phaser.Cameras.Scene2D.Camera, effect: Phaser.Cameras.Scene2D.Effects.Fade) => {
@@ -42,6 +44,12 @@ export class GameOverScene extends Phaser.Scene {
             highScore = score;
             this.messnew.setVisible(true);
         }
+        if (score >= 15)
+            this.medal.setTexture('sprite', 'medal/gold-medal-1');
+        else if (score >= 10)
+            this.medal.setTexture('sprite', 'medal/gold-medal-0');
+        else if (score >= 5)
+            this.medal.setTexture('sprite', 'medal/silver-medal-1');
         localStorage.setItem('score', `${highScore}`);
         this.score.setScore(score);
         this.score.setVisible(true).showScore();

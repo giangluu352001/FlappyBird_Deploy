@@ -10,13 +10,12 @@ export class Ground extends Phaser.GameObjects.Sprite {
         this.setScale(scale).setDepth(3);
         this.move();
     }
-    public move(): void {
+    private move(): void {
         this.scene.tweens.add({
           targets: this,
           x: - this.displayWidth / 2,
           duration: (this.x + this.displayWidth / 2) / SPEED * 1000,
           loop: -1
         });
-      }
-   
+    }
 }
