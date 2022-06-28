@@ -78,18 +78,11 @@ export class GameManager {
         let pipeUp: PipeUp = new PipeUp(this.scene, random);
         let pipeDown: PipeDown = new PipeDown(this.scene, random);
         this.pipeObstacle.addMultiple([pipeUp, pipeDown]);
-        this.upScore(FIRSTDELAY, false, true);
-    }
-    private upScore(delay: number, isLoop: boolean, isCallback: boolean): void {
         this.scene.time.addEvent({
-            delay: delay,
-            loop: isLoop,
+            delay: FIRSTDELAY,
+            loop: false,
             callbackScope: this,
-            callback: () => { if (isCallback) this.inscrease() }
+            callback: () => { this.obj.score.increaseScore(); }
         });
-    }
-    private inscrease = (): void => {
-        this.obj.score.increaseScore();
-        this.upScore(FIRSTDELAY + DELAYADD, true, false);
     }
 }
