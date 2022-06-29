@@ -1,26 +1,16 @@
 import Phaser = require("phaser");
-import { PIPEFIRSTX, SPEED } from "../constant";
+import { PIPEFIRSTX } from "../constant";
+import { move } from "../Helper/helper";
 export class Pipe extends Phaser.GameObjects.Image {
-    body: Phaser.Physics.Arcade.Body
+    body: Phaser.Physics.Arcade.Body;
     constructor(scene: Phaser.Scene, text: string) {
         super(scene, 0, 0, 'sprite', text);
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.setOrigin(0.5, 0).setDepth(2).setScale(1.3);
         this.body.immovable = true;
-        this.move();
-    }
-    private move(): void {
-        this.scene.tweens.add({
-          targets: this,
-          x: - this.displayWidth / 2,
-          duration: (PIPEFIRSTX + this.displayWidth / 2) / SPEED * 1000,
-          loop: 0,
-          onComplete: () => {
-            this.destroy();
-          }
-        });
-    }
+        move(scene, this);
+    }   
 }
 export class PipeDown extends Pipe {
     constructor(scene: Phaser.Scene, random: number) {

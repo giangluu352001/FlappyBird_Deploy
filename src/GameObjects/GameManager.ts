@@ -1,5 +1,6 @@
 import Phaser = require("phaser");
-import { DELAYADD, FIRSTDELAY } from "../constant";
+import { DELAYADD, GAP, PIPEFIRSTX, PIPEHEIGHT } from "../constant";
+import { move } from "../Helper/helper";
 import { GameOverScene } from "../Scenes/GameOverScene";
 import { Background } from "./Background";
 import { Bird } from "./Bird";
@@ -77,12 +78,17 @@ export class GameManager {
         const random: number = Phaser.Math.Between(120, 220);
         let pipeUp: PipeUp = new PipeUp(this.scene, random);
         let pipeDown: PipeDown = new PipeDown(this.scene, random);
+        this.upScore(pipeDown.y, pipeDown.displayWidth);
         this.pipeObstacle.addMultiple([pipeUp, pipeDown]);
-        this.scene.time.addEvent({
-            delay: FIRSTDELAY,
-            loop: false,
-            callbackScope: this,
-            callback: this.obj.score.increaseScore
+    }
+    private upScore(position: number, width: number): void {
+        let rectangle = this.scene.add.rectangle(PIPEFIRSTX, position 
+        + PIPEHEIGHT + GAP / 2, width, GAP, 0x6666ff);
+        this.scene.physics.add.existing(rectangle);
+        move(this.scene, rectangle);
+        let overlapScore = this.scene.physics.add.overlap(this.obj.bird, rectangle, () => {
+            this.obj.score.increaseScore();
+            this.scene.physics.world.removeCollider(overlapScore);
         });
     }
 }

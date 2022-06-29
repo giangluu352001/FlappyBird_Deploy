@@ -23,7 +23,7 @@ export class InitialScene extends Phaser.Scene {
         this.score = new Score(this, 'digit-36', 300, 80);
         this.messButton = new ButtonTitle(this);
         this.pauseButton = this.add.image(120, 80, 'sprite', 'button/button-pause')
-        .setVisible(false).setDepth(7).setScale(1.3).setInteractive().on('pointerdown', () => {
+        .setVisible(false).setDepth(7).setScale(1.5).setInteractive().on('pointerdown', () => {
             this.scene.launch('resume-scene');
             this.scene.pause();
         });
