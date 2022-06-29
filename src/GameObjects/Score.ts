@@ -16,7 +16,7 @@ export class Score extends Phaser.GameObjects.Container {
         return this.value;
     }
     public showScore(): void {
-        this.getAll().forEach((num) => num.destroy());
+        this.removeAll(true);
         let idx: number = 0;
         this.value.toString().split('').forEach((char) => {
             let digit: Phaser.GameObjects.Image = this.scene.add.image(idx, 0, 'sprite', `digit/${this.size}-${char}`);

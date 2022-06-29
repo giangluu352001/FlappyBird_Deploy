@@ -1,7 +1,8 @@
+import { shrug } from "../Helper/helper";
+
 export class Bird extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
     private idle: Phaser.Tweens.Tween;
-    private isFly: boolean = false;
     constructor(scene: Phaser.Scene, x: number, y: number, scale?: number) {
         super(scene, x, y, 'bird2');
         this.setScale(scale).setDepth(4);
@@ -14,11 +15,13 @@ export class Bird extends Phaser.GameObjects.Sprite {
         this.play('fly', true);
         this.setIdle();
     }
-    public checkisFly(): boolean {
-        return this.isFly;
+    public pause(): void {
+        this.anims.pause();
+        this.scene.physics.pause();
     }
-    public setisFly(val: boolean): void {
-        this.isFly = val;
+    public resume(): void {
+        this.anims.resume();
+        this.scene.physics.resume();
     }
     private flyAnimation(): void {
         let config: Phaser.Types.Animations.Animation = {
@@ -45,20 +48,14 @@ export class Bird extends Phaser.GameObjects.Sprite {
     }
     public setIdle(): void {
         this.idle?.stop();
-        this.idle = this.scene.tweens.add({
-          targets: this,
-          y: {from: this.y + 6, to: this.y - 6 },
-          duration: 600,
-          yoyo: -1,
-          repeat: -1
-        });
+        this.idle = shrug(this.scene, this);
     }
     public die(): void {
         this.body.setVelocityY(400);
         this.anims.stop();
     }
     public update(time: number, delta: number): void {
-        if (this.angle >= -25 && this.angle <= 90 
-        && this.body.velocity.y >= 400) this.angle += 5;
+        if (this.angle >= -25 && this.angle <= 90 && this.body.velocity.y >= 400 
+        && !this.scene.physics.world.isPaused) this.angle += 5;
     }
 }

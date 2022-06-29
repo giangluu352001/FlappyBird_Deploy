@@ -20,7 +20,7 @@ export class GameOverScene extends Phaser.Scene {
         this.score = new Score(this, 'digit-20', 60, -32);
         this.highScore = new Score(this, 'digit-20', 60, 12);
         container.add(board).add(ok).add(this.score).add(this.messnew)
-        .add(this.highScore).add(this.medal).add(message).setDepth(6).setScale(1.3);
+        .add(this.highScore).add(this.medal).add(message).setDepth(6).setScale(1.5);
         this.cameras.main.flash();
         this.tweens.add({
             targets: container,
@@ -33,7 +33,7 @@ export class GameOverScene extends Phaser.Scene {
         this.sound.play('swoosh');
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, 
-            () => { this.scene.start('initial-scene') });
+            () => this.scene.start('initial-scene'));
     }
     public show(score: number): void {
         let highScore: number = Number(localStorage.getItem('score'));
