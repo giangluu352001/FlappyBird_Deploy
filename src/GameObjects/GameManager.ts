@@ -134,6 +134,7 @@ export class GameManager {
         let pipeDown: PipeDown = new PipeDown(this.scene, random);
         this.upScore(pipeDown.y, pipeDown.displayWidth);
         this.pipeObstacle.addMultiple([pipeUp, pipeDown]);
+        console.log(pipeUp.y - pipeDown.y - pipeUp.displayHeight)
     }
     private upScore(position: number, width: number): void {
         let rectangle = this.scene.add.rectangle(PIPEFIRSTX, position 

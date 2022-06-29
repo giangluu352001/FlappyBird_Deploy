@@ -15,7 +15,7 @@ export class Pipe extends Phaser.GameObjects.Image {
 export class PipeDown extends Pipe {
     constructor(scene: Phaser.Scene, random: number) {
         super(scene, 'pipe/green-pipe-down');
-        this.setPosition(PIPEFIRSTX, -420 + random);
+        this.setPosition(PIPEFIRSTX, -400 + random);
     }
 }
 export class PipeUp extends Pipe {
