@@ -15,6 +15,7 @@ export class LoadingScene extends Phaser.Scene {
         this.load.image('bird3', './assets/bird/frame-3.png');
         this.load.image('bird4', './assets/bird/frame-4.png');
         this.load.atlas('sprite', './assets/flappy-bird-sprite.png', './assets/flappy-bird-sprite.json');
+        this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
     }
     public create(): void {
         this.scene.start('initial-scene');

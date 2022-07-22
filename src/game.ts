@@ -1,7 +1,7 @@
 import Phaser = require("phaser");
 import { HEIGHTSCENE, WIDTHSCENE } from "./constant";
 import { GameOverScene } from "./Scenes/GameOverScene";
-import { InitialScene } from "./Scenes/InitialScene";
+import { GameScene } from "./Scenes/GameScene";
 import { LoadingScene } from "./Scenes/LoadingScene";
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -16,6 +16,6 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false
     }
   },
-  scene: [LoadingScene, InitialScene, GameOverScene] 
+  scene: [LoadingScene, GameScene, GameOverScene] 
 }
 export default new Phaser.Game(config);

@@ -18,7 +18,7 @@
         "phaser": "3.55.2"
     },
     "scripts": {
-        "serve": "webpack-dev-server",
+        "dev": "webpack-dev-server",
         "build": "webpack",
         "predeploy": " npm run build",
         "deploy": "gh-pages -d build"

@@ -27,6 +27,7 @@ export class GameManager {
     private input: Phaser.Input.Keyboard.Key;
     private state: State;
     private timer: Phaser.Time.TimerEvent;
+    private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
     constructor(scene: Phaser.Scene, obj: objectGame) {
         this.scene = scene;
         this.obj = obj;
@@ -64,13 +65,15 @@ export class GameManager {
                         if (this.state == State.PAUSED) { 
                             this.obj.pauseResume.setOpposite();
                             this.resume();
-                            if (!this.obj.readyPlay.visible) this.state = State.RUNNING;
+                            if (!this.obj.readyPlay.visible) 
+                                this.state = State.RUNNING;
                             else this.state = State.READY;
                         }
                     }
                 }
                 else if (this.state == State.READY) {
                     this.play();
+                    this.flyParticle();
                     this.obj.readyPlay.setVisible(false);
                     this.state = State.RUNNING;
                 }
@@ -79,6 +82,7 @@ export class GameManager {
         });
     }
     private end = (): void => {
+        this.dieParticle();
         this.scene.sound.play('hit');
         this.obj.bird.die();
         setAllVisible(false, this.obj.score, this.obj.pauseResume);
@@ -86,6 +90,12 @@ export class GameManager {
         this.scene.scene.wake('gameOver-scene');
         let gameOverScene = this.scene.scene.get('gameOver-scene') as GameOverScene;
         gameOverScene.show(this.obj.score.getScore());
+    }
+    private dieParticle(): void {
+        this.emitter.setSpeed({ min: -800, max: 800 });
+        this.emitter.setAngle({ min: 0, max: 360 });
+        this.emitter.setBlendMode('SCREEN');
+        this.emitter.explode(10, this.obj.bird.x, this.obj.bird.y);
     }
     private play = (): void => {
         this.obj.bird.jump();
@@ -108,12 +118,14 @@ export class GameManager {
     }
     private pause(): void {
         this.obj.bird.pause();
+        if (this.emitter) this.emitter.pause();
         if (this.timer) this.timer.paused = true;
         this.input.enabled = false;
         this.scene.tweens.getAllTweens().forEach((tween) => tween.pause());
     }
     private resume(): void {
         this.obj.bird.resume();
+        if (this.emitter) this.emitter.resume();
         if (this.timer) this.timer.paused = false;
         this.input.enabled = true;
         this.scene.tweens.getAllTweens().forEach((tween) => tween.resume());
@@ -143,6 +155,19 @@ export class GameManager {
         let overlapScore = this.scene.physics.add.overlap(this.obj.bird, rectangle, () => {
             this.obj.score.increaseScore();
             this.scene.physics.world.removeCollider(overlapScore);
+        });
+    }
+    private flyParticle(): void {
+        this.emitter = this.scene.add.particles('flares').setDepth(3)
+        .createEmitter({
+            frame: 'blue',
+            speed: 100,
+            scale: { start: 0.4, end: 0.2 },
+            angle: { min: 175, max: 185 },
+            frequency: 50,
+            lifespan: 3000,
+            blendMode: 'ADD',
+            follow: this.obj.bird
         });
     }
 }
